@@ -78,7 +78,7 @@ class L1(caffe.Layer):
 
     def backward(self, top, propagate_down, bottom):
 
-	    # get the sign
+        # get the sign
         diff_sign = np.sign(self.diff)
 
         for i in range(2):
