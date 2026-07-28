@@ -115,7 +115,7 @@ class SSIM(caffe.Layer):
 
 		# initialize the gaussian filter based on the bottom size
         width = bottom[0].width
-        self.w = np.exp(-1.*np.arange(-(width/2), width/2+1)**2/(2*self.sigma**2))
+        self.w = np.exp(-1.*np.arange(-(width//2), width//2+1)**2/(2*self.sigma**2))
         self.w = np.outer(self.w, self.w.reshape((width, 1)))	# extend to 2D
         self.w = self.w/np.sum(self.w)							# normailization
         self.w = np.reshape(self.w, (1, 1, width, width)) 		# reshape to 4D
@@ -176,7 +176,7 @@ class MSSSIM(caffe.Layer):
 
 		# initialize the gaussian filters based on the bottom size
         for i in range(num_scale):
-            weights = np.exp(-1.*np.arange(-(width/2), width/2+1)**2/(2*self.sigma[i]**2))
+            weights = np.exp(-1.*np.arange(-(width//2), width//2+1)**2/(2*self.sigma[i]**2))
             weights = np.outer(weights, weights.reshape((width, 1)))	# extend to 2D
             weights = weights/np.sum(weights)							# normailization
             weights = np.reshape(weights, (1, 1, width, width)) 		# reshape to 4D
@@ -253,7 +253,7 @@ class MSSSIML1(caffe.Layer):
 
 		# initialize the gaussian filters based on the bottom size
         for i in range(num_scale):
-            gaussian = np.exp(-1.*np.arange(-(self.width/2), self.width/2+1)**2/(2*self.sigma[i]**2))
+            gaussian = np.exp(-1.*np.arange(-(self.width//2), self.width/2+1)**2/(2*self.sigma[i]**2))
             gaussian = np.outer(gaussian, gaussian.reshape((self.width, 1)))	# extend to 2D
             gaussian = gaussian/np.sum(gaussian)								# normailization
             gaussian = np.reshape(gaussian, (1, 1, self.width, self.width)) 	# reshape to 4D
@@ -337,7 +337,7 @@ class MSSSIML2(caffe.Layer):
 
 		# initialize the gaussian filters based on the bottom size
         for i in range(num_scale):
-            gaussian = np.exp(-1.*np.arange(-(self.width/2), self.width/2+1)**2/(2*self.sigma[i]**2))
+            gaussian = np.exp(-1.*np.arange(-(self.width//2), self.width/2+1)**2/(2*self.sigma[i]**2))
             gaussian = np.outer(gaussian, gaussian.reshape((self.width, 1)))	# extend to 2D
             gaussian = gaussian/np.sum(gaussian)								# normailization
             gaussian = np.reshape(gaussian, (1, 1, self.width, self.width)) 	# reshape to 4D
