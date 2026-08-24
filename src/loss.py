@@ -119,7 +119,7 @@ class SSIM(caffe.Layer):
         self.w = np.outer(self.w, self.w.reshape((width, 1)))	# extend to 2D
         self.w = self.w/np.sum(self.w)							# normailization
         self.w = np.reshape(self.w, (1, 1, width, width)) 		# reshape to 4D
-        self.w = np.tile(self.w, (bottom[0].num, 3, 1, 1))
+        self.w = np.tile(self.w, (bottom[0].num, bottom[0].channels, 1, 1))
 
     def forward(self, bottom, top):
         self.mux = np.sum(self.w * bottom[0].data, axis=(2,3), keepdims=True)
@@ -165,14 +165,14 @@ class MSSSIM(caffe.Layer):
 		# initialize the size to 5D
         num_scale = len(self.sigma)
         width = bottom[0].width
-        self.w = np.empty((num_scale, bottom[0].num, 3, width, width))
-        self.mux = np.empty((num_scale, bottom[0].num, 3, 1, 1))
-        self.muy = np.empty((num_scale, bottom[0].num, 3, 1, 1))
-        self.sigmax2 = np.empty((num_scale, bottom[0].num, 3, 1, 1))
-        self.sigmay2 = np.empty((num_scale, bottom[0].num, 3, 1, 1))
-        self.sigmaxy = np.empty((num_scale, bottom[0].num, 3, 1, 1))
-        self.l = np.empty((num_scale, bottom[0].num, 3, 1, 1))
-        self.cs = np.empty((num_scale, bottom[0].num, 3, 1, 1))
+        self.w = np.empty((num_scale, bottom[0].num, bottom[0].channels, width, width))
+        self.mux = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
+        self.muy = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
+        self.sigmax2 = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
+        self.sigmay2 = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
+        self.sigmaxy = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
+        self.l = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
+        self.cs = np.empty((num_scale, bottom[0].num, bottom[0].channels, 1, 1))
 
 		# initialize the gaussian filters based on the bottom size
         for i in range(num_scale):
@@ -180,7 +180,7 @@ class MSSSIM(caffe.Layer):
             weights = np.outer(weights, weights.reshape((width, 1)))	# extend to 2D
             weights = weights/np.sum(weights)							# normailization
             weights = np.reshape(weights, (1, 1, width, width)) 		# reshape to 4D
-            weights = np.tile(weights, (bottom[0].num, 3, 1, 1))
+            weights = np.tile(weights, (bottom[0].num, bottom[0].channels, 1, 1))
             self.w[i,:,:,:,:] = weights
 
     def forward(self, bottom, top):
